@@ -20,6 +20,20 @@ class BasePIN:
     def _get_child(self, name: str):
         raise NotImplementedError
 
+    def get(self, path: str):
+        path = path.split('.')
+        obj = self
+        for e in path:
+            obj = getattr(obj, e)
+        return obj
+
+    def set(self, path: str, value):
+        path = path.split('.')
+        obj = self
+        for e in path[:-1]:
+            obj = getattr(obj, e)
+        setattr(obj, path[-1], value)
+
 
 # region commands
 

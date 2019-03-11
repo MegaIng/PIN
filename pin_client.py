@@ -27,7 +27,6 @@ class PINClient:
     def request_content(self, pin: PIN):
         self.client.send(DIR_PREFIX + pin._full_path.encode())
         data = self.client.recv(65536)
-        print(data)
         if data == NONE_PREFIX:
             return ()
         return tuple(b.decode() for b in data.split(SEPARATOR))
@@ -45,7 +44,7 @@ class PIN(BasePIN):
         self._client: PINClient = client or PINClient()
         self._children_cache = {}
 
-    def __setattr__(self, key:str, value):
+    def __setattr__(self, key: str, value):
         if key.startswith("_"):
             return super().__setattr__(key, value)
         if not key.isidentifier() or keyword.iskeyword(key):
@@ -66,3 +65,4 @@ class PIN(BasePIN):
         if name not in self._children_cache:
             self._children_cache[name] = PIN(name, self, self._client)
         return self._children_cache[name]
+
